@@ -18,4 +18,4 @@ spec:
         - name: conv-app-container
           image: antonlarichev/conv-app:1.2
           ports:
-            - containerPort: 8080
+            - containerPort: 80
