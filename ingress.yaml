@@ -1,19 +1,29 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: conv-app-ingress
+  name: short-app-ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: nginx  # Minikube
 spec:
-  ingressClassName: nginx
   rules:
-    - host: conv.test
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: conv-app-service
-                port:
-                  number: 80  
+  - host: short-app.test
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: conv-app-service  # ← Frontend 
+            port:
+              number: 80
+  - host: api.test
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: api-service        # ← Backend API
+            port:
+              number: 3000
