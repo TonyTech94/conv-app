@@ -40,6 +40,16 @@ spec:
                 secretKeyRef:
                   name: conv-api-secret
                   key: AMQP_PASSWORD
+            - name: SEEDUSERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: seed-user-secret
+                  key: SEEDUSERNAME
+            - name: SEEDUSER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: seed-user-secret
+                  key: SEEDUSER_PASSWORD
           volumeMounts:
             - name: uploads
               mountPath: /opt/app/uploads
