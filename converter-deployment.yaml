@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: converter-deployment
+  labels:
+    app: converter
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: converter
+  template:
+    metadata:
+      labels:
+        app: converter
+    spec:
+      containers:
+        - name: converter-container
+          image: antonlarichev/conv-service:1.0
+          env:
+            - name: AMQP_EXCHANGE
+              valueFrom:
+                secretKeyRef:
+                  name: converter-secret
+                  key: AMQP_EXCHANGE
+            - name: AMQP_HOSTNAME
+              valueFrom:
+                secretKeyRef:
+                  name: converter-secret
+                  key: AMQP_HOSTNAME
+            - name: AMQP_USER
+              valueFrom:
+                secretKeyRef:
+                  name: converter-secret
+                  key: AMQP_USER
+            - name: AMQP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: converter-secret
+                  key: AMQP_PASSWORD
+            - name: AMQP_QUEUE
+              valueFrom:
+                secretKeyRef:
+                  name: converter-secret
+                  key: AMQP_QUEUE
+          volumeMounts:
+            - name: uploads
+              mountPath: /opt/app/uploads
+      volumes:
+        - name: uploads
+          persistentVolumeClaim:
+            claimName: conv-api-pvc
